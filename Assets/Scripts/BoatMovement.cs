@@ -6,10 +6,10 @@ public class BoatMovement : MonoBehaviour
 {
 
     private float velocity = 0.0f;
-    private float maxVelocity = 10.0f;
+    private float maxVelocity = 25.0f;
     private float accelRate = 0.5f;
     private float decelRate = 0.25f;
-    private float turnSpeed = 0.25f;
+    private float turnSpeed = 1.0f;
 
     // Update is called once per frame
     void Update()
@@ -22,41 +22,41 @@ public class BoatMovement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W))
         {
-            Accelerate(accelRate);
+            Accelerate();
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            AccelerateBackwards(accelRate);
+            AccelerateBackwards();
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            Turn(turnSpeed * -1);
+            TurnLeft();
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            Turn(turnSpeed);
+            TurnRight();
         }
 
 
         if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
-            Decelerate(decelRate);
+            Decelerate();
         }
     }
 
-    void Accelerate(float strength)
+    void Accelerate()
     {
         velocity += accelRate;
-        if(velocity > maxVelocity)
+        if (velocity > maxVelocity)
         {
             velocity = maxVelocity;
         }
     }
 
-    void AccelerateBackwards(float strength)
+    void AccelerateBackwards()
     {
         velocity -= accelRate;
         if (velocity < maxVelocity * -1)
@@ -65,7 +65,7 @@ public class BoatMovement : MonoBehaviour
         }
     }
 
-    void Decelerate(float strength)
+    void Decelerate()
     {
         if (velocity <= decelRate && velocity >= (decelRate * -1))
         {
@@ -84,11 +84,19 @@ public class BoatMovement : MonoBehaviour
         }
     }
 
-    void Turn(float strength)
+    void TurnLeft()
     {
         if (velocity == 0)
         {
-            // Turn
+            transform.Rotate(0, turnSpeed * -1, 0);
+        }
+    }
+
+    void TurnRight()
+    {
+        if (velocity == 0)
+        {
+            transform.Rotate(0, turnSpeed, 0);
         }
     }
 
@@ -96,15 +104,7 @@ public class BoatMovement : MonoBehaviour
     {
         if (velocity != 0)
         {
-            Debug.Log("Velocity: " + velocity);
-            Vector3 forward = transform.forward;
-
-            //float z = transform.position.z + (forward.z * velocity);
-
-            //Debug.Log("Old z: " + transform.position.z + "--- New x: " + z);
-
-
-            transform.Translate(forward * velocity);
+            transform.Translate(transform.forward * velocity * Time.deltaTime, Space.World);
         }
     }
 }
