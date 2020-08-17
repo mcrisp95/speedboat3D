@@ -1,7 +1,5 @@
 # Speedboat3D
 
-Foobar is a Python library for dealing with word pluralization.
-
 ## Source Code
 The C# file \Assets\Scripts\BoatMovement.cs is written by me
 
